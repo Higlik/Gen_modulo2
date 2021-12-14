@@ -1,6 +1,6 @@
 package br.org.generation.blogpessoal.model;
 
-import java.util.List;
+import java.math.BigDecimal;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -8,9 +8,11 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
 import javax.validation.constraints.Size;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 
@@ -24,7 +26,7 @@ public class Produtos {
 	private long id;
 	
 	// Nome do produto
-	@Size(min = 5, max = 30, message = "O nome deve conter de 5 a 30 caracteres")
+	@NotNull(message = "nome do game é obrigatório")
 	private String nome;
 	
 	
@@ -33,17 +35,20 @@ public class Produtos {
 	private String descricao;
 	
 	//Console para o game
-	@Size(max= 500, message = "O console deve conter 2 a 25 caracteres")
+	@NotNull (message = "O game necessita de um console")
 	private String console;
 	
 	//Quantidade do produto
 	private int quantidade;
 	
 	//Valor do produto
-	private int valor;
+	@JsonFormat(shape = JsonFormat.Shape.STRING)
+	@NotNull(message = "Preço é obrigatório!")
+	@Positive(message = "O preço deve ser maior do que zero!")
+	private BigDecimal preco;
 	
 	//foto
-	@NotBlank(message = "O produto necessita ter uma imagem")
+	
 	private String foto;
 	
 	@ManyToOne
@@ -53,12 +58,11 @@ public class Produtos {
 	@ManyToOne
 	@JsonIgnoreProperties("produtos")
 	private Usuarios usuarios;
-
 	
 	//----------------------------------------------------------------
-		// GET AND SET
-	//-----------------------------------------------------------------
-	
+			// GET AND SET
+		//-----------------------------------------------------------------
+		
 
 
 	public long getId() {
@@ -101,12 +105,12 @@ public class Produtos {
 		this.quantidade = quantidade;
 	}
 
-	public int getValor() {
-		return valor;
+	public BigDecimal getPreco() {
+		return preco;
 	}
 
-	public void setValor(int valor) {
-		this.valor = valor;
+	public void setPreco(BigDecimal preco) {
+		this.preco = preco;
 	}
 
 	public String getFoto() {
@@ -121,23 +125,20 @@ public class Produtos {
 		return categorias;
 	}
 
-	public void setCategirias(Categorias categorias) {
+	public void setCategorias(Categorias categorias) {
 		this.categorias = categorias;
 	}
 
-	public Usuarios getUsuario() {
+	public Usuarios getUsuarios() {
 		return usuarios;
 	}
 
-	public void setUsuario(List<Usuarios> usuario) {
+	public void setUsuarios(Usuarios usuarios) {
 		this.usuarios = usuarios;
 	}
+
 	
 	
-	
-	
-	
-		
 	
 	
 }

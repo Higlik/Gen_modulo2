@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -11,10 +12,10 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-import org.hibernate.annotations.UpdateTimestamp;
-
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
@@ -38,18 +39,17 @@ public class Usuarios {
 	
 	//Atributo senha
 	@NotBlank (message = "O nome de usuário não pode ser vazio")
-	@Size(min = 2, max = 15, message = "O nome de usuário deve conter de 2 a 15 caracteres")
+	@Size(min = 8, message = "A senha deve ter no minímo 8 caracteres")
 	private String senha;
 	
 	//Atributo foto
 	private String foto;
 	
-	//Data
-	private int data_nascimento;
 	
-	//Cadastra o tempo real da maquina
-		@UpdateTimestamp
-		private LocalDate data;
+	@Column(name = "data_nascimento")
+	@JsonFormat(pattern = "yyyy-MM-dd")
+	@NotNull(message = "A data de nascimento não pode ser vazia")
+	private LocalDate dataNascimento;
 	
 	//FK
 	@OneToMany (mappedBy = "usuarios", cascade = CascadeType.ALL)
@@ -77,13 +77,6 @@ public class Usuarios {
 		this.nome = nome;
 	}
 
-	public int getData_nascimento() {
-		return data_nascimento;
-	}
-
-	public void setData_nascimento(int data_nascimento) {
-		this.data_nascimento = data_nascimento;
-	}
 
 	public String getUsuario() {
 		return usuario;
@@ -109,13 +102,6 @@ public class Usuarios {
 		this.foto = foto;
 	}
 
-	public LocalDate getData() {
-		return data;
-	}
-
-	public void setData(LocalDate data) {
-		this.data = data;
-	}
 
 	public List<Produtos> getProdutos() {
 		return produtos;
@@ -123,6 +109,14 @@ public class Usuarios {
 
 	public void setProdutos(List<Produtos> produtos) {
 		this.produtos = produtos;
+	}
+
+	public LocalDate getDataNascimento() {
+		return dataNascimento;
+	}
+
+	public void setDataNascimento(LocalDate dataNascimento) {
+		this.dataNascimento = dataNascimento;
 	}
 	
 	
