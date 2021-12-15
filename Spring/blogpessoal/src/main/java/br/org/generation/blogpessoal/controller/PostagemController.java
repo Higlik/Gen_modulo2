@@ -76,6 +76,6 @@ public class PostagemController {
 	
 	//Deleta uma postagem
 		
-	}
-	
+}
+
 }
